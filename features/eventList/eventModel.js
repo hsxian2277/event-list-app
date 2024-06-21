@@ -16,7 +16,7 @@ class EventModel {
     return [...this.#events];
   }
 
-  addEvent(newTodo) {
+  addEvent(newEvent) {
     this.#events.push(newEvent);
   }
 
