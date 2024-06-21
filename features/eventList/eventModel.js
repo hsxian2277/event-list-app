@@ -16,11 +16,11 @@ class EventModel {
     return [...this.#events];
   }
 
-  addTodo(newTodo) {
-    this.#events.push(newTodo);
+  addEvent(newTodo) {
+    this.#events.push(newEvent);
   }
 
-  removeTodo(id) {
+  removeEvent(id) {
     this.#events = this.#events.filter((todo) => todo.id !== id);
   }
 }

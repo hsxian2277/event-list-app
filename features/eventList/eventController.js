@@ -87,7 +87,13 @@ class EventController {
     this.#view.eventList.addEventListener("click", (e) => {
       if (e.target.classList.contains("event-item-action-buttons__edit")) {
         const eventId = e.target.parentElement.parentElement.parentElement.getAttribute("id");
-        this.#view.renderEventInput(eventId, "edit");
+        const siblings = e.target.parentElement.parentElement.parentElement.childNodes;
+        const oldEvent = {
+          eventName: siblings[0].childNodes[0].textContent,
+          startDate: siblings[1].childNodes[0].textContent,
+          endDate: siblings[2].childNodes[0].textContent,
+        };
+        this.#view.renderEventInput(eventId, oldEvent);
       }
     });
   }

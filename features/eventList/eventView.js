@@ -4,10 +4,9 @@ class EventView {
     this.addEventBtn = document.querySelector('.add-event-list-button');
   }
 
-  renderEventInput(eventId, type) {
+  renderEventInput(eventId, oldEvent) {
     const eventItem = document.getElementById(eventId);
     let tableRow = null;
-    console.log(eventItem);
     if (eventId !== undefined) {
       while (eventItem.childNodes.length !== 0) {
         eventItem.removeChild(eventItem.childNodes[0])
@@ -16,7 +15,6 @@ class EventView {
     } else {
       tableRow = document.createElement('tr');
     }
-    console.log(tableRow);
 
     const eventName = document.createElement('td');
     const eventStart = document.createElement('td');
@@ -32,6 +30,12 @@ class EventView {
     const nameInput = document.createElement('input');
     const startInput = document.createElement('input');
     const endInput = document.createElement('input');
+
+    if (oldEvent !== undefined) {
+      nameInput.value = oldEvent.eventName;
+      startInput.value = oldEvent.startDate;
+      endInput.value = oldEvent.endDate;
+    }
   
     const buttons = document.createElement("div");
     buttons.classList.add("event-item-action-buttons");
@@ -56,19 +60,28 @@ class EventView {
 
     tableRow.append(eventName, eventStart, eventEnd, eventAction);
 
-    console.log(tableRow)
     if (eventId === undefined) {
       this.eventList.appendChild(tableRow);
     }
   }
 
-  renderEvent(newEvent) {
+  renderEvent(newEvent, eventId) {
+    const eventItem = document.getElementById(eventId);
+    let tableRow = null;
+    if (eventId !== undefined) {
+      while (eventItem.childNodes.length !== 0) {
+        eventItem.removeChild(eventItem.childNodes[0])
+      }
+      tableRow = eventItem;
+    } else {
+      tableRow = document.createElement('tr');
+    }
+
     const eventName = document.createElement('td');
     const eventStart = document.createElement('td');
     const eventEnd = document.createElement('td');
     const eventAction = document.createElement('td');
 
-    const tableRow = document.createElement('tr');
     tableRow.classList = 'event-item';
     eventName.classList = 'event-item-name';
     eventStart.classList = 'event-item-start';
@@ -105,8 +118,9 @@ class EventView {
 
   cancelEvent(oldEvent, eventId, unsavedEvent) {
     if (eventId === undefined) {
-
+      unsavedEvent.remove();
+    } else {
+      this.renderEvent(oldEvent, eventId);
     }
-    unsavedEvent.remove();
   }
 }
