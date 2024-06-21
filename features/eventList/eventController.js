@@ -41,16 +41,28 @@ class EventController {
         e.preventDefault();
         const siblings = e.target.parentElement.parentElement.parentElement.childNodes;
         const parent = e.target.parentElement.parentElement.parentElement;
+        const eventId = e.target.parentElement.parentElement.parentElement.getAttribute("id");
+        console.log(eventId);
         const newEvent = {
           eventName: siblings[0].childNodes[0].value,
           startDate: siblings[1].childNodes[0].value,
           endDate: siblings[2].childNodes[0].value,
         };
-        eventAPI.postEventAPI(newEvent).then((_newEvent) => {
-          parent.remove()
-          this.#model.addEvent(_newEvent);
-          this.#view.renderEvent(_newEvent);
-        });
+        if (eventId) {
+          console.log('this should patch');
+          eventAPI.editEventAPI(eventId, newEvent).then((_newEvent) => {
+            parent.remove()
+            this.#model.addEvent(_newEvent);
+            this.#view.renderEvent(_newEvent);
+          });
+        } else {
+          console.log('this should post')
+          eventAPI.postEventAPI(newEvent).then((_newEvent) => {
+            parent.remove()
+            this.#model.addEvent(_newEvent);
+            this.#view.renderEvent(_newEvent);
+          });
+        }
       }
     });
   }
