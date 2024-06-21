@@ -4,13 +4,25 @@ class EventView {
     this.addEventBtn = document.querySelector('.add-event-list-button');
   }
 
-  renderEventInput() {
+  renderEventInput(eventId, type) {
+    const eventItem = document.getElementById(eventId);
+    let tableRow = null;
+    console.log(eventItem);
+    if (eventId !== undefined) {
+      while (eventItem.childNodes.length !== 0) {
+        eventItem.removeChild(eventItem.childNodes[0])
+      }
+      tableRow = eventItem;
+    } else {
+      tableRow = document.createElement('tr');
+    }
+    console.log(tableRow);
+
     const eventName = document.createElement('td');
     const eventStart = document.createElement('td');
     const eventEnd = document.createElement('td');
     const eventAction = document.createElement('td');
 
-    const tableRow = document.createElement('tr');
     tableRow.classList = 'event-item';
     eventName.classList = 'event-item-name';
     eventStart.classList = 'event-item-start';
@@ -44,10 +56,57 @@ class EventView {
 
     tableRow.append(eventName, eventStart, eventEnd, eventAction);
 
+    console.log(tableRow)
+    if (eventId === undefined) {
+      this.eventList.appendChild(tableRow);
+    }
+  }
+
+  renderEvent(newEvent) {
+    const eventName = document.createElement('td');
+    const eventStart = document.createElement('td');
+    const eventEnd = document.createElement('td');
+    const eventAction = document.createElement('td');
+
+    const tableRow = document.createElement('tr');
+    tableRow.classList = 'event-item';
+    eventName.classList = 'event-item-name';
+    eventStart.classList = 'event-item-start';
+    eventEnd.classList = 'event-item-end';
+    eventAction.classList = 'event-item-action';
+
+    eventName.textContent = newEvent.eventName;
+    eventStart.textContent = newEvent.startDate;
+    eventEnd.textContent = newEvent.endDate;
+
+    const buttons = document.createElement("div");
+    buttons.classList.add("event-item-action-buttons");
+
+    const editBtn = document.createElement("button");
+    editBtn.classList.add("event-item-action-buttons__edit");
+    editBtn.textContent = "Edit";
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.classList.add("event-item-action-buttons__delete");
+    deleteBtn.textContent = "Delete";
+
+    buttons.append(editBtn, deleteBtn);
+    eventAction.appendChild(buttons);
+    tableRow.append(eventName, eventStart, eventEnd, eventAction);
+
+    tableRow.id = newEvent.id;
     this.eventList.appendChild(tableRow);
   }
 
-  renderEvent() {
+  removeEvent(eventId) {
+    const eventItem = document.getElementById(eventId);
+    eventItem.remove();
+  }
 
+  cancelEvent(oldEvent, eventId, unsavedEvent) {
+    if (eventId === undefined) {
+
+    }
+    unsavedEvent.remove();
   }
 }
