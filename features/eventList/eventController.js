@@ -46,9 +46,9 @@ class EventController {
           startDate: siblings[1].childNodes[0].value,
           endDate: siblings[2].childNodes[0].value,
         };
-        console.log(newEvent);
         eventAPI.postEventAPI(newEvent).then((_newEvent) => {
           parent.remove()
+          this.#model.addEvent(_newEvent);
           this.#view.renderEvent(_newEvent);
         });
       }
@@ -76,7 +76,7 @@ class EventController {
       if (e.target.classList.contains("event-item-action-buttons__delete")) {
         const eventId = e.target.parentElement.parentElement.parentElement.getAttribute("id");
         eventAPI.deleteEventAPI(eventId).then(() => {
-          // this.#model.removeTodo(eventId);
+          this.#model.removeEvent(eventId);
           this.#view.removeEvent(eventId);
         });
       }
